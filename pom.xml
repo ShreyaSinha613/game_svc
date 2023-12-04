@@ -81,6 +81,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>game-svc</finalName>
 	</build>
 
 </project>
