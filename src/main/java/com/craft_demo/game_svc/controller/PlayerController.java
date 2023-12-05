@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class PlayerController {
-    @GetMapping("/")
+    @GetMapping("/probes")
     public String checkReadiness(){
         return "It's up and ready";
     }
