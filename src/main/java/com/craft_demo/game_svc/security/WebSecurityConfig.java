@@ -21,7 +21,7 @@ public class WebSecurityConfig  {
                         -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/**").permitAll() // wildcard matching
                         .anyRequest().authenticated()
                 );
 
