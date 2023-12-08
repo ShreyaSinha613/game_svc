@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameScoreBoard {
+    private String id;
     private Integer leaderBoardSize;
     private String leaderBoardName;
 }
