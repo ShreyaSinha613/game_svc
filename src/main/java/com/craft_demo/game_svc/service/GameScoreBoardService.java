@@ -1,7 +1,6 @@
 package com.craft_demo.game_svc.service;
 
 import com.craft_demo.game_svc.constants.Constants;
-import com.craft_demo.game_svc.controller.PlayerController;
 import com.craft_demo.game_svc.exception.ScoreBoardInitializationException;
 import com.craft_demo.game_svc.model.GameScoreBoard;
 import com.craft_demo.game_svc.model.Player;
@@ -14,8 +13,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class GameLeaderBoardService {
-    Logger logger = LoggerFactory.getLogger(GameLeaderBoardService.class);
+public class GameScoreBoardService {
+    Logger logger = LoggerFactory.getLogger(GameScoreBoardService.class);
 
     @Autowired
     PlayerService playerService;
@@ -36,7 +35,7 @@ public class GameLeaderBoardService {
             isScoreBoardInitialised = true;
         } catch (Exception e) {
             logger.error("Error in creating the score board");
-            throw new ScoreBoardInitializationException("Failed to create leader board");
+            throw new ScoreBoardInitializationException("Failed to create score board");
         }
     }
 

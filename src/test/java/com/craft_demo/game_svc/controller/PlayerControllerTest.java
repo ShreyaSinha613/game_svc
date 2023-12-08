@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 
@@ -60,6 +61,18 @@ public class PlayerControllerTest {
                 .when(playerService).updatePlayer(Mockito.any());
         BaseResponse response = playerController.updatePlayerDetails(MockObjects.mockCreatePlayer(false));
         assertEquals("200 OK", response.getStatusCode().toString());
+    }
+
+    @SneakyThrows
+    @Test
+    void updatePlayerThrowsError() {
+        MockitoAnnotations.initMocks(this);
+        doThrow(new DatabaseOperationException("Could not save the player details"))
+                .when(playerService).updatePlayer(Mockito.any());
+        Throwable err = assertThrows(ResponseStatusException.class, ()->{
+            playerController.updatePlayerDetails(MockObjects.mockUpdatePlayer());
+        });
+        assertEquals("500 INTERNAL_SERVER_ERROR \"Could not save the player details\"", err.getMessage());
     }
 
     @SneakyThrows

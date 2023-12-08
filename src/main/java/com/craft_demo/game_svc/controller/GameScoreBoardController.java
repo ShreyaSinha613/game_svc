@@ -3,7 +3,7 @@ package com.craft_demo.game_svc.controller;
 import com.craft_demo.game_svc.exception.ScoreBoardInitializationException;
 import com.craft_demo.game_svc.model.GameScoreBoard;
 import com.craft_demo.game_svc.model.Player;
-import com.craft_demo.game_svc.service.GameLeaderBoardService;
+import com.craft_demo.game_svc.service.GameScoreBoardService;
 import com.craft_demo.game_svc.utils.RestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,7 +21,7 @@ public class GameScoreBoardController {
     Logger logger = LoggerFactory.getLogger(GameScoreBoardController.class);
 
     @Autowired
-    GameLeaderBoardService gameLeaderBoardService;
+    GameScoreBoardService gameLeaderBoardService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createGameScoreBoard(@RequestBody GameScoreBoard gameScoreBoard) {

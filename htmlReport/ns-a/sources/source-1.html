@@ -1,0 +1,183 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CacheService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.craft_demo.game_svc.service</a>
+</div>
+
+<h1>Coverage Summary for Class: CacheService (com.craft_demo.game_svc.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CacheService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (36/44)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.craft_demo.game_svc.service;
+&nbsp;
+&nbsp;import com.craft_demo.game_svc.exception.CacheException;
+&nbsp;import com.craft_demo.game_svc.model.Player;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class CacheService {</b>
+<b class="fc">&nbsp;    Logger logger = LoggerFactory.getLogger(CacheService.class);</b>
+&nbsp;
+&nbsp;    PriorityQueue&lt;Player&gt; topPlayers;
+&nbsp;    Map&lt;String, Player&gt; recordedPlayers;
+&nbsp;
+&nbsp;    Integer assignedSize;
+&nbsp;    public void getInitialScoreBoardData(Integer sizeOfBoard, List&lt;Player&gt; players) throws CacheException {
+&nbsp;        try {
+&nbsp;            // Create a min-heap with a size of sizeOfBoard and a custom comparator for player scores
+<b class="fc">&nbsp;            topPlayers = new PriorityQueue&lt;Player&gt;(sizeOfBoard, Comparator.comparingLong(Player::getTopScore));</b>
+<b class="fc">&nbsp;            recordedPlayers = new HashMap&lt;String, Player&gt;();</b>
+<b class="fc">&nbsp;            assignedSize = sizeOfBoard;</b>
+&nbsp;            // Iterate through all players
+<b class="fc">&nbsp;            for (Player player : players) {</b>
+&nbsp;                // Add player to the heap if it&#39;s not full or has a higher score than the minimum score in the heap
+<b class="fc">&nbsp;                if(topPlayers.size()&lt;sizeOfBoard) {</b>
+<b class="fc">&nbsp;                    topPlayers.add(player);</b>
+<b class="fc">&nbsp;                    recordedPlayers.put(player.getId(), player);</b>
+<b class="fc">&nbsp;                } else if (player.getTopScore() &gt; topPlayers.peek().getTopScore()) {</b>
+<b class="fc">&nbsp;                    topPlayers.offer(player);</b>
+<b class="fc">&nbsp;                    if (topPlayers.size() &gt; sizeOfBoard) {</b>
+<b class="fc">&nbsp;                        Player lowScore = topPlayers.poll(); // Remove the player with the lowest score</b>
+<b class="fc">&nbsp;                        recordedPlayers.remove(lowScore.getId());</b>
+<b class="fc">&nbsp;                        recordedPlayers.put(player.getId(), player);</b>
+&nbsp;                    }
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Failed to initialise the score board&quot;);</b>
+<b class="nc">&nbsp;            throw new CacheException(&quot;Failed to initialise the board&quot;);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Player&gt; getTopScorers() {
+<b class="fc">&nbsp;        List&lt;Player&gt; scores = new ArrayList&lt;&gt;(topPlayers);</b>
+<b class="fc">&nbsp;        scores.sort(Comparator.comparing(Player::getTopScore));</b>
+<b class="fc">&nbsp;        Collections.reverse(scores);</b>
+<b class="fc">&nbsp;        return scores;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void checkAndAddNewHighPlayerScore(Player player) throws CacheException {
+&nbsp;        try{
+<b class="fc">&nbsp;            if(recordedPlayers.containsKey(player.getId())</b>
+<b class="fc">&nbsp;                    &amp;&amp; recordedPlayers.get(player.getId()).getTopScore()&lt;player.getTopScore()) {</b>
+<b class="fc">&nbsp;                Player existingRecord = recordedPlayers.get(player.getId());</b>
+<b class="fc">&nbsp;                topPlayers.remove(existingRecord);</b>
+<b class="fc">&nbsp;                recordedPlayers.remove(player.getId());</b>
+<b class="fc">&nbsp;                topPlayers.offer(player);</b>
+<b class="fc">&nbsp;                recordedPlayers.put(player.getId(), player);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="fc">&nbsp;            if(topPlayers.size()&lt;assignedSize){</b>
+<b class="nc">&nbsp;                topPlayers.add(player);</b>
+<b class="nc">&nbsp;                recordedPlayers.put(player.getId(), player);</b>
+<b class="fc">&nbsp;            } else if(topPlayers.peek().getTopScore()&lt;player.getTopScore()) {</b>
+<b class="fc">&nbsp;                Player lowScored = topPlayers.poll();</b>
+<b class="fc">&nbsp;                recordedPlayers.remove(lowScored.getId());</b>
+<b class="fc">&nbsp;                recordedPlayers.put(player.getId(), player);</b>
+<b class="fc">&nbsp;                topPlayers.remove(lowScored);</b>
+<b class="fc">&nbsp;                topPlayers.add(player);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;Failed to check the player&#39;s updated score&quot;);</b>
+<b class="nc">&nbsp;            throw new CacheException(&quot;Failed to check the player&#39;s updated score&quot; + e.getMessage());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-08 18:58</div>
+</div>
+</body>
+</html>

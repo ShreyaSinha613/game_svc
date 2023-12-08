@@ -39,12 +39,13 @@ public class CacheService {
             }
         } catch (Exception e) {
             logger.error("Failed to initialise the score board");
-            throw new CacheException(e.getMessage());
+            throw new CacheException("Failed to initialise the board");
         }
     }
 
     public List<Player> getTopScorers() {
         List<Player> scores = new ArrayList<>(topPlayers);
+        scores.sort(Comparator.comparing(Player::getTopScore));
         Collections.reverse(scores);
         return scores;
     }
@@ -56,7 +57,7 @@ public class CacheService {
                 Player existingRecord = recordedPlayers.get(player.getId());
                 topPlayers.remove(existingRecord);
                 recordedPlayers.remove(player.getId());
-                topPlayers.add(player);
+                topPlayers.offer(player);
                 recordedPlayers.put(player.getId(), player);
                 return;
             }
