@@ -55,15 +55,15 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (6/6)
+    (7/7)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    80.8%
+    83.9%
   </span>
   <span class="absValue">
-    (21/26)
+    (26/31)
   </span>
 </td>
 </tr>
@@ -153,7 +153,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * publish the score to the kafka topic to update the leaderboard
 &nbsp;     * @throws DatabaseOperationException
 &nbsp;     */
-&nbsp;    public void updateScore(String playerId, HashMap&lt;String, Long&gt; scoreDetails) throws DatabaseOperationException {
+&nbsp;    public void updateScore(String playerId, HashMap&lt;String, Long&gt; scoreDetails) throws DatabaseOperationException, KafkaPublishException {
 &nbsp;        try {
 <b class="fc">&nbsp;            Player player = getPlayerById(playerId);</b>
 <b class="fc">&nbsp;            player.setCurrentScore(scoreDetails.get(&quot;currentScore&quot;));</b>
@@ -161,12 +161,21 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;                player.setTopScore(scoreDetails.get(&quot;currentScore&quot;));</b>
 &nbsp;            }
 <b class="fc">&nbsp;            kafkaPublisherService.sendMessageToKafkaTopic(player);</b>
-<b class="fc">&nbsp;            playerRepository.save(player);</b>
 <b class="fc">&nbsp;        } catch (KafkaPublishException e) {</b>
 <b class="fc">&nbsp;            throw new KafkaPublishException(e.getMessage());</b>
 <b class="nc">&nbsp;        } catch (Exception e) {</b>
 <b class="nc">&nbsp;            throw new DatabaseOperationException(&quot;Could not update the player score&quot;);</b>
 <b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void updateScoreFromConsumer(Player playerFromConsumer) {
+<b class="fc">&nbsp;        Player player = getPlayerById(playerFromConsumer.getId());</b>
+<b class="fc">&nbsp;        player.setCurrentScore(playerFromConsumer.getCurrentScore());</b>
+<b class="fc">&nbsp;        if (playerFromConsumer.getCurrentScore() &gt;= player.getTopScore()) {</b>
+<b class="fc">&nbsp;            player.setTopScore(playerFromConsumer.getCurrentScore());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        player.setLastUpdatedAt(Instant.now());</b>
+<b class="fc">&nbsp;        playerRepository.save(player);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -192,7 +201,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-12-08 18:58</div>
+    <div style="float:right;">generated on 2023-12-09 12:47</div>
 </div>
 </body>
 </html>

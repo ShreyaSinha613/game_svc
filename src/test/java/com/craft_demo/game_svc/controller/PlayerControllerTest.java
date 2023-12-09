@@ -86,4 +86,18 @@ public class PlayerControllerTest {
         BaseResponse response = playerController.updateCurrentScore("12345", hashMap);
         assertEquals("200 OK", response.getStatusCode().toString());
     }
+
+    @SneakyThrows
+    @Test
+    void updatePlayerScoreThrowsError() {
+        MockitoAnnotations.initMocks(this);
+        HashMap<String, Long> hashMap = new HashMap<>();
+        hashMap.put("Arthur", 1234L);
+        doThrow(new DatabaseOperationException("Could not update the player score"))
+                .when(playerService).updateScore(Mockito.any(),Mockito.any());
+        Throwable err = assertThrows(ResponseStatusException.class, ()->{
+            playerController.updateCurrentScore("12345", hashMap);
+        });
+        assertEquals("500 INTERNAL_SERVER_ERROR \"Could not update the player score\"", err.getMessage());
+    }
 }

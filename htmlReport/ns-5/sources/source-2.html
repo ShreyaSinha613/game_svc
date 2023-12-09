@@ -60,10 +60,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    81.2%
+    100%
   </span>
   <span class="absValue">
-    (13/16)
+    (16/16)
   </span>
 </td>
 </tr>
@@ -130,9 +130,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;            //publish the score to the topic or in a flat file
 <b class="fc">&nbsp;            playerService.updateScore(id, score);</b>
 <b class="fc">&nbsp;            return RestUtils.createSuccessBaseResponse();</b>
-<b class="nc">&nbsp;        } catch(Exception e) {</b>
-<b class="nc">&nbsp;            logger.error(&quot;Failed to save the current score of player &quot; + e.getMessage());</b>
-<b class="nc">&nbsp;            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());</b>
+<b class="fc">&nbsp;        } catch(Exception e) {</b>
+<b class="fc">&nbsp;            logger.error(&quot;Failed to save the current score of player &quot; + e.getMessage());</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;}
@@ -159,7 +159,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-12-08 18:58</div>
+    <div style="float:right;">generated on 2023-12-09 12:47</div>
 </div>
 </body>
 </html>

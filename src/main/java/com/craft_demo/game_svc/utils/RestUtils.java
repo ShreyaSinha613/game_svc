@@ -18,9 +18,4 @@ public class RestUtils {
     public static BaseResponse createSuccessBaseResponse () {
         return new BaseResponse(ImmutableMap.of("status", String.valueOf(HttpStatus.OK.value())), HttpStatus.OK);
     }
-
-    public static BaseResponse createFailureBaseResponse (HttpStatus status) {
-        return new BaseResponse(ImmutableMap.of("status", String.valueOf(status.value())), status);
-    }
-
 }

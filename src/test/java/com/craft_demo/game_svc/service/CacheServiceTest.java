@@ -2,6 +2,7 @@ package com.craft_demo.game_svc.service;
 
 import com.craft_demo.game_svc.constants.Constants;
 import com.craft_demo.game_svc.exception.CacheException;
+import com.craft_demo.game_svc.exception.DatabaseOperationException;
 import com.craft_demo.game_svc.mocks.MockObjects;
 import com.craft_demo.game_svc.model.Player;
 import lombok.SneakyThrows;
@@ -11,7 +12,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -48,5 +51,10 @@ public class CacheServiceTest {
                 .build();
         cacheService.checkAndAddNewHighPlayerScore(newPlayer);
         assertEquals(MockObjects.addedPlayerToList(newPlayer), cacheService.getTopScorers());
+
+        Throwable err = assertThrows(CacheException.class, ()->{
+            cacheService.getInitialScoreBoardData(5, null);
+        });
+        assertEquals("Failed to initialise the board", err.getMessage());
     }
 }

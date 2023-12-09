@@ -76,7 +76,7 @@ public class PlayerService {
      * publish the score to the kafka topic to update the leaderboard
      * @throws DatabaseOperationException
      */
-    public void updateScore(String playerId, HashMap<String, Long> scoreDetails) throws DatabaseOperationException {
+    public void updateScore(String playerId, HashMap<String, Long> scoreDetails) throws DatabaseOperationException, KafkaPublishException {
         try {
             Player player = getPlayerById(playerId);
             player.setCurrentScore(scoreDetails.get("currentScore"));
@@ -84,11 +84,20 @@ public class PlayerService {
                 player.setTopScore(scoreDetails.get("currentScore"));
             }
             kafkaPublisherService.sendMessageToKafkaTopic(player);
-            playerRepository.save(player);
         } catch (KafkaPublishException e) {
             throw new KafkaPublishException(e.getMessage());
         } catch (Exception e) {
             throw new DatabaseOperationException("Could not update the player score");
         }
+    }
+
+    public void updateScoreFromConsumer(Player playerFromConsumer) {
+        Player player = getPlayerById(playerFromConsumer.getId());
+        player.setCurrentScore(playerFromConsumer.getCurrentScore());
+        if (playerFromConsumer.getCurrentScore() >= player.getTopScore()) {
+            player.setTopScore(playerFromConsumer.getCurrentScore());
+        }
+        player.setLastUpdatedAt(Instant.now());
+        playerRepository.save(player);
     }
 }

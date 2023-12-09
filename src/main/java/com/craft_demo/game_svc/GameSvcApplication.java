@@ -8,7 +8,6 @@ public class GameSvcApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GameSvcApplication.class, args);
-		System.out.println("Hello project");
 	}
 
 }

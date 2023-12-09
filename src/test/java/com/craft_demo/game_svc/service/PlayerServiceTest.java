@@ -106,4 +106,12 @@ public class PlayerServiceTest{
         });
         assertEquals("Unable to send message to topic \"" + Constants.publishedTopic, er.getMessage());
     }
+
+    @SneakyThrows
+    @Test
+    void updatePlayerScoreFromConsumer() {
+        when(playerRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(MockObjects.mockCreatePlayer(false)));
+        playerService.updateScoreFromConsumer(MockObjects.mockCreatePlayer(false));
+        verify(playerRepository, times(1)).save(Mockito.any());
+    }
 }

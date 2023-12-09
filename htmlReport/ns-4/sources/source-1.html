@@ -60,10 +60,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    28.6%
+    25%
   </span>
   <span class="absValue">
-    (2/7)
+    (2/8)
   </span>
 </td>
 </tr>
@@ -80,6 +80,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import com.craft_demo.game_svc.constants.Constants;
 &nbsp;import com.craft_demo.game_svc.model.Player;
 &nbsp;import com.craft_demo.game_svc.service.CacheService;
+&nbsp;import com.craft_demo.game_svc.service.PlayerService;
 &nbsp;import org.slf4j.Logger;
 &nbsp;import org.slf4j.LoggerFactory;
 &nbsp;import org.springframework.beans.factory.annotation.Autowired;
@@ -93,11 +94,16 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Autowired
 &nbsp;    CacheService cacheService;
 &nbsp;
+&nbsp;    @Autowired
+&nbsp;    PlayerService playerService;
+&nbsp;
 &nbsp;    @KafkaListener(topics = Constants.publishedTopic, groupId = Constants.groupId)
 &nbsp;    public void consumeMessage(Player player) {
 <b class="nc">&nbsp;        logger.info(&quot;Consumer consumed the message&quot;);</b>
 &nbsp;        try {
 <b class="nc">&nbsp;            cacheService.checkAndAddNewHighPlayerScore(player);</b>
+&nbsp;            //one can update the database after consuming the message.
+<b class="nc">&nbsp;            playerService.updateScoreFromConsumer(player);</b>
 <b class="nc">&nbsp;        } catch (Exception e) {</b>
 <b class="nc">&nbsp;            logger.error(&quot;Failed to consume the message &quot; + e.getMessage());</b>
 <b class="nc">&nbsp;        }</b>
@@ -126,7 +132,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-12-08 18:58</div>
+    <div style="float:right;">generated on 2023-12-09 12:47</div>
 </div>
 </body>
 </html>

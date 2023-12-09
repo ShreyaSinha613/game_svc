@@ -52,18 +52,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    50%
+    66.7%
   </span>
   <span class="absValue">
-    (2/4)
+    (2/3)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    66.7%
+    80%
   </span>
   <span class="absValue">
-    (4/6)
+    (4/5)
   </span>
 </td>
 </tr>
@@ -95,11 +95,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    public static BaseResponse createSuccessBaseResponse () {
 <b class="fc">&nbsp;        return new BaseResponse(ImmutableMap.of(&quot;status&quot;, String.valueOf(HttpStatus.OK.value())), HttpStatus.OK);</b>
 &nbsp;    }
-&nbsp;
-&nbsp;    public static BaseResponse createFailureBaseResponse (HttpStatus status) {
-<b class="nc">&nbsp;        return new BaseResponse(ImmutableMap.of(&quot;status&quot;, String.valueOf(status.value())), status);</b>
-&nbsp;    }
-&nbsp;
 &nbsp;}
 </code>
 </pre>
@@ -124,7 +119,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-12-08 18:58</div>
+    <div style="float:right;">generated on 2023-12-09 12:47</div>
 </div>
 </body>
 </html>
