@@ -2,7 +2,7 @@ package com.craft_demo.game_svc.controller;
 
 import com.craft_demo.game_svc.model.Player;
 import com.craft_demo.game_svc.model.response.BaseResponse;
-import com.craft_demo.game_svc.service.serviceImpl.PlayerServiceImpl;
+import com.craft_demo.game_svc.service.PlayerService;
 import com.craft_demo.game_svc.utils.RestUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class PlayerController {
     Logger logger = LoggerFactory.getLogger(PlayerController.class);
 
     @Autowired
-    PlayerServiceImpl playerService;
+    PlayerService playerService;
 
     @PatchMapping("/{id}/update-current-score")
     public BaseResponse updateCurrentScore (@PathVariable("id") String id, @RequestBody HashMap<String, Long> score) {
