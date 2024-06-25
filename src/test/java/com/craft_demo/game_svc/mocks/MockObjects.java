@@ -46,7 +46,7 @@ public class MockObjects {
     }
 
     public static GameScoreBoard mockGameScoreBoard(){
-        return GameScoreBoard.builder().leaderBoardSize(null).leaderBoardName(null).id(null).build();
+        return GameScoreBoard.builder().leaderBoardSize(null).id(null).build();
     }
 
     public static List<Player> mockPlayerList() {

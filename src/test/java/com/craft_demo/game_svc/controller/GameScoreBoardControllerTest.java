@@ -2,7 +2,7 @@ package com.craft_demo.game_svc.controller;
 
 import com.craft_demo.game_svc.exception.ScoreBoardInitializationException;
 import com.craft_demo.game_svc.mocks.MockObjects;
-import com.craft_demo.game_svc.service.GameScoreBoardService;
+import com.craft_demo.game_svc.service.serviceImpl.GameScoreBoardServiceImpl;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 
 public class GameScoreBoardControllerTest {
     @Mock
-    GameScoreBoardService gameLeaderBoardService;
+    GameScoreBoardServiceImpl gameLeaderBoardService;
 
     @InjectMocks
     GameScoreBoardController gameScoreBoardController;

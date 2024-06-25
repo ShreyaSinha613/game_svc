@@ -3,7 +3,7 @@ package com.craft_demo.game_svc.controller;
 import com.craft_demo.game_svc.exception.DatabaseOperationException;
 import com.craft_demo.game_svc.mocks.MockObjects;
 import com.craft_demo.game_svc.model.response.BaseResponse;
-import com.craft_demo.game_svc.service.PlayerService;
+import com.craft_demo.game_svc.service.serviceImpl.PlayerServiceImpl;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 
 public class PlayerControllerTest {
     @Mock
-    PlayerService playerService;
+    PlayerServiceImpl playerService;
 
     @InjectMocks
     PlayerController playerController;

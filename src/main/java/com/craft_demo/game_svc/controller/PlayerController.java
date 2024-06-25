@@ -2,7 +2,7 @@ package com.craft_demo.game_svc.controller;
 
 import com.craft_demo.game_svc.model.Player;
 import com.craft_demo.game_svc.model.response.BaseResponse;
-import com.craft_demo.game_svc.service.PlayerService;
+import com.craft_demo.game_svc.service.serviceImpl.PlayerServiceImpl;
 import com.craft_demo.game_svc.utils.RestUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,7 +22,19 @@ public class PlayerController {
     Logger logger = LoggerFactory.getLogger(PlayerController.class);
 
     @Autowired
-    PlayerService playerService;
+    PlayerServiceImpl playerService;
+
+    @PatchMapping("/{id}/update-current-score")
+    public BaseResponse updateCurrentScore (@PathVariable("id") String id, @RequestBody HashMap<String, Long> score) {
+        try {
+            //publish the score to the topic or in a flat file
+            playerService.updateScore(id, score);
+            return RestUtils.createSuccessBaseResponse();
+        } catch(Exception e) {
+            logger.error("Failed to save the current score of player " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 
     @GetMapping("/probes")
     public String checkReadiness(){
@@ -30,7 +42,7 @@ public class PlayerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPlayer(@RequestBody Player player) {
+    public ResponseEntity<?> createPlayer(@RequestBody Player player) throws Exception {
         Player newPlayer = playerService.createPlayer(player);
         logger.info("New player created with id " + newPlayer.getId());
         return RestUtils.createCreateBaseResponse(newPlayer.getId());
@@ -43,18 +55,6 @@ public class PlayerController {
             return RestUtils.createSuccessBaseResponse();
         } catch (Exception e) {
             logger.error("Failed to save the player details " + e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-    }
-
-    @PatchMapping("/{id}/update-current-score")
-    public BaseResponse updateCurrentScore (@PathVariable("id") String id, @RequestBody HashMap<String, Long> score) {
-        try {
-            //publish the score to the topic or in a flat file
-            playerService.updateScore(id, score);
-            return RestUtils.createSuccessBaseResponse();
-        } catch(Exception e) {
-            logger.error("Failed to save the current score of player " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }

@@ -3,7 +3,7 @@ package com.craft_demo.game_svc.controller;
 import com.craft_demo.game_svc.exception.ScoreBoardInitializationException;
 import com.craft_demo.game_svc.model.GameScoreBoard;
 import com.craft_demo.game_svc.model.Player;
-import com.craft_demo.game_svc.service.GameScoreBoardService;
+import com.craft_demo.game_svc.service.serviceImpl.GameScoreBoardServiceImpl;
 import com.craft_demo.game_svc.utils.RestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class GameScoreBoardController {
     Logger logger = LoggerFactory.getLogger(GameScoreBoardController.class);
 
     @Autowired
-    GameScoreBoardService gameLeaderBoardService;
+    GameScoreBoardServiceImpl gameLeaderBoardService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createGameScoreBoard(@RequestBody GameScoreBoard gameScoreBoard) {

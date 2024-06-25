@@ -11,5 +11,4 @@ import org.springframework.data.annotation.Id;
 public class GameScoreBoard {
     private String id;
     private Integer leaderBoardSize;
-    private String leaderBoardName;
 }
