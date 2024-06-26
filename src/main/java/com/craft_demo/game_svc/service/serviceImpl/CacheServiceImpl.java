@@ -46,7 +46,10 @@ public class CacheServiceImpl implements CacheService<Player> {
 
     public List<Player> getTopScorers() {
         List<Player> scores = new ArrayList<>(topPlayers);
-        scores.sort(Comparator.comparing(Player::getTopScore));
+        Comparator<Player> playerComparator = Comparator
+                .comparing(Player::getTopScore)
+                .thenComparing(Player::getLastUpdatedAt);
+        scores.sort(playerComparator);
         Collections.reverse(scores);
         return scores;
     }

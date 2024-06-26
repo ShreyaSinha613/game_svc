@@ -88,6 +88,7 @@ public class PlayerServiceImpl implements PlayerService {
             player.setCurrentScore(scoreDetails.get("currentScore"));
             if (scoreDetails.get("currentScore") >= player.getTopScore()) {
                 player.setTopScore(scoreDetails.get("currentScore"));
+                player.setLastUpdatedAt(Instant.now());
             }
             kafkaPublisher.publishMessageToKafkaTopic(player);
         } catch (KafkaPublishException e) {
