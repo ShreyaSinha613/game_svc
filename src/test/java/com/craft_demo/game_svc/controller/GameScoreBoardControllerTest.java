@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -72,9 +73,7 @@ public class GameScoreBoardControllerTest {
     void getTopScorersListThrowsError() {
         MockitoAnnotations.initMocks(this);
         doThrow(new ScoreBoardInitializationException("Score board is not yet initialised")).when(gameLeaderBoardService).getTopScorersInGame();
-        Throwable err = assertThrows(ResponseStatusException.class, ()->{
-            gameScoreBoardController.getTopScorers();
-        });
-        assertEquals("400 BAD_REQUEST \"No score board is present, please create one\"", err.getMessage());
+        ResponseEntity<?> response = gameScoreBoardController.getTopScorers();
+        assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 }

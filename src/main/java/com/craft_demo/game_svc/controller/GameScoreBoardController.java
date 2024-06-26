@@ -35,14 +35,13 @@ public class GameScoreBoardController {
     }
 
     @GetMapping("/top-scorers")
-    public ResponseEntity<List<Player>> getTopScorers() {
+    public ResponseEntity<?> getTopScorers() {
         try {
             List<Player> topScorers = gameLeaderBoardService.getTopScorersInGame();
             return ResponseEntity.ok(topScorers);
         } catch (ScoreBoardInitializationException e) {
             logger.error(e.getMessage());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "No score board is present, please create one");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error("Couldn't fetch top scores - " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
